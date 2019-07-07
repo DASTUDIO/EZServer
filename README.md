@@ -1,6 +1,6 @@
 <h1>EZ Server</h1>
 </br>
-一句话构建服务端与客户端
+使用方法：Visual Studio: 点击Project->Add NuGet Packages...->搜索ezserver->勾选->Add Package
 </br></br></br>
 <h3>服务端</h3></br></br>
 
