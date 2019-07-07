@@ -5,10 +5,10 @@
 <h3>服务端</h3>
 
 // 创建一个HTTP服务端</br>
-<small>ezserver.HTTP_Server_Start((string rawURL, string postContent) => { return "Hello World"; },8085);</small>
+ezserver.HTTP_Server_Start((string rawURL, string postContent) => { return "Hello World"; },8085);
 
 // 创建一个TCP Socket 服务端</br>
-ezserver.TCP_Server_Start((string clientID)=> { /* On Connect */ },(string clientID, string receivedStr) => { /* On Received */ return "got it"; }, 8084);
+ezserver.TCP_Server_Start((string clientID)=> {},(string clientID, string receivedStr) => { return "got it"; }, 8084);
 
 // 创建一个UDP Socket 服务端</br>
 ezserver.UDP_Server_Start((System.Net.EndPoint endPoint, string receivedStr) => { return "git it"; }, 8083);
