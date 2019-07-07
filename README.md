@@ -34,6 +34,6 @@
 正则匹配 </br>
 示例：爬取页面内所有图片</br>
 <code>ezserver.HTTP_Request_GET("http://example.com", (string html) => {
-      foreach (var item in Tools.RegEx.FindAll(html, "<img src=\"", "\"", false)){
+      foreach (var item in Tools.RegEx.FindAll(html, "<img src=\\"", "\\"", false)){
             Console.WriteLine(item);}});</code>
  </br></br>
