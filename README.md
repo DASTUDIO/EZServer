@@ -37,3 +37,5 @@
       foreach (var item in Tools.RegEx.FindAll(html, "<img src=\\"", "\\"", false)){
             Console.WriteLine(item);}});</code>
  </br></br>
+详细使用在隔壁EZ Server Unity3D 的 Readme.md 里
+             </br></br>
