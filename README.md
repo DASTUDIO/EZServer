@@ -11,7 +11,7 @@
 <code>ezserver.TCP_Server_Start((string clientID)=> {},(string clientID, string receivedStr) => { return "got it"; }, 8084);</code>
 </br></br></br>
 创建UDP Socket 服务端</br>
-<code>ezserver.UDP_Server_Start((System.Net.EndPoint endPoint, string receivedStr) => { return "git it"; }, 8083);</code>
+<code>ezserver.UDP_Server_Start((System.Net.EndPoint endPoint, string receivedStr) => { return "got it"; }, 8083);</code>
 
 </br></br>
 <h3>客户端</h3></br></br>
