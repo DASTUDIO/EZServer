@@ -5,7 +5,7 @@
 <h3>服务端</h3>
 
 <font size="3" color="green">// 创建一个HTTP服务端</font></br>
-'''ezserver.HTTP_Server_Start((string rawURL, string postContent) => { return "Hello World"; },8085);'''
+<code>ezserver.HTTP_Server_Start((string rawURL, string postContent) => { return "Hello World"; },8085);</code>
 
 // 创建一个TCP Socket 服务端</br>
 ezserver.TCP_Server_Start((string clientID)=> {},(string clientID, string receivedStr) => { return "got it"; }, 8084);
