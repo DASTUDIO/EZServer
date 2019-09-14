@@ -15,9 +15,6 @@ using Z;
 ```
 EzServer.ServerHttpStart([接收到请求后的回调方法],[监听端口])
 ```
-```
-
-
 
 ### 服务端
 
