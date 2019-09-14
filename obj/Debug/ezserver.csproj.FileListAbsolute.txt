@@ -1,0 +1,7 @@
+/Users/davidjang/Documents/GitHub/ezserver/bin/Debug/DN.xml
+/Users/davidjang/Documents/GitHub/ezserver/bin/Debug/ezserver.exe
+/Users/davidjang/Documents/GitHub/ezserver/bin/Debug/ezserver.pdb
+/Users/davidjang/Documents/GitHub/ezserver/obj/Debug/ezserver.csproj.CoreCompileInputs.cache
+/Users/davidjang/Documents/GitHub/ezserver/obj/Debug/ezserver.exe
+/Users/davidjang/Documents/GitHub/ezserver/obj/Debug/ezserver.pdb
+/Users/davidjang/Documents/GitHub/ezserver/obj/Debug/ezserver.csprojAssemblyReference.cache

@@ -3,7 +3,7 @@ using System.Text;
 using System.Threading;
 using System.IO;
 
-namespace  ezserver.Tools
+namespace  Z.Tools
 {
     public class FileLogPrinter
     {

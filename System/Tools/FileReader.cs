@@ -6,7 +6,7 @@ using System.Collections.Generic;
 // #行首为注释行
 // 空格不限 变量名大小写不限 一律大写
 
-namespace  ezserver.Tools
+namespace  Z.Tools
 {
     public class FileReader
     {
@@ -30,7 +30,7 @@ namespace  ezserver.Tools
 
         StreamReader sr;
 
-        public FileReader(string filePath) : this(filePath, ezserver.GlobalEncoding) { }
+        public FileReader(string filePath) : this(filePath, EzServer.GlobalEncoding) { }
 
         public FileReader(string filePath, Encoding codingType)
         {

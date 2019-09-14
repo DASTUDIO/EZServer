@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
-using ezserver.Tools;
+using Z.Tools;
 
-namespace ezserver
+namespace Z
 {
     public class TcpServer
     {
@@ -22,17 +21,17 @@ namespace ezserver
 
         #region Message Manager
 
-        public void BroadCastMessageToAllClients(string msg)
+        public void BroadCastMessageToAllClients(byte[] msg, string exclusive="")
         {
             foreach (string item in ClientTokens)
             {
-                if (Token[item] != null)
+                if (Token[item] != null /*&& item!= exclusive*/)
                     Token[item].SendDataToClient(msg);
             }
             return;
         }
 
-        public void SendMessageToClient(string clientToken, string msg)
+        public void SendMessageToClient(string clientToken, byte[] msg)
         {
             if (Token[clientToken] != null)
                 Token[clientToken].SendDataToClient(msg);
@@ -48,15 +47,15 @@ namespace ezserver
         {
             IPAddress ipa;
 
-            switch (this.transProtocol)
+            switch (transProtocol)
             {
-                case (DIPType.IPv4):
+                case IPType.IPv4:
                     {
                         ipa = IPAddress.Any;
                     }
                     break;
 
-                case (DIPType.IPv6):
+                case IPType.IPv6:
                     {
                         ipa = IPAddress.IPv6Any;
                     }
@@ -69,11 +68,11 @@ namespace ezserver
                     }
             }
 
-            if (this.ipAddr != "0.0.0.0")
+            if (ipAddr != "0.0.0.0") 
             {
                 try
                 {
-                    ipa = IPAddress.Parse(this.ipAddr);
+                    ipa = IPAddress.Parse(ipAddr);
                 }
                 catch (Exception e)
                 {
@@ -85,7 +84,7 @@ namespace ezserver
 
             try
             {
-                ipe = new IPEndPoint(ipa, this.port);
+                ipe = new IPEndPoint(ipa, port);
             }
             catch (Exception e)
             {
@@ -93,9 +92,9 @@ namespace ezserver
                 return;
             }
 
-            switch (this.transProtocol)
+            switch (transProtocol)
             {
-                case DIPType.IPv4:
+                case  IPType.IPv4:
                     {
                         listener =
                         new Socket(
@@ -105,7 +104,7 @@ namespace ezserver
                     }
                     break;
 
-                case DIPType.IPv6:
+                case  IPType.IPv6:
                     {
                         listener =
                         new Socket(
@@ -157,8 +156,8 @@ namespace ezserver
 
             try
             {
-                if (this.TearDown != null)
-                    this.TearDown();
+                if (TearDown != null)
+                    TearDown();
             }
             catch (Exception e)
             {
@@ -199,7 +198,7 @@ namespace ezserver
         /// <summary>
         /// 传入客户端Token ， 消息msg
         /// </summary>
-        public Func<string, string, string> OnClientReceived;
+        public Func<string, byte[], byte[]> OnClientReceived;
 
 
 
@@ -208,12 +207,6 @@ namespace ezserver
         #region Socket CallBack
 
         #region Socekt Element
-
-        static byte[] buffer = new byte[1024];
-
-        const int BufferSize = 1024;
-
-        static StringBuilder sb = new StringBuilder();
 
         Random randomFactor = new Random();
 
@@ -229,14 +222,12 @@ namespace ezserver
 
             string token = Token.GenToken(randomFactor.Next(2, 32));
 
-            Token[token] = new TcpConnectedPeer(token, ClientHandler, this.OnClientReceived, this);
-
-            //Logger.Log("Client: " + Token[token] + " is connected " );
+            Token[token] = new TcpConnectedPeer(token, ClientHandler, OnClientReceived, this);
 
             try
             {
-                if (this.OnClientConnected != null)
-                    this.OnClientConnected(Token[token].token);
+                if (OnClientConnected != null)
+                    OnClientConnected(Token[token].token);
             }
             catch (Exception e)
             {
@@ -256,7 +247,7 @@ namespace ezserver
 
         int ConcurrencyVolumn;
 
-        DIPType transProtocol;
+        IPType transProtocol;
 
         Socket listener;
 
@@ -267,18 +258,18 @@ namespace ezserver
         public TcpServer(
             string _IPAddress,
             int _port,
-            DIPType _transProtocol,
+            IPType _transProtocol,
             Action<string> OnClientConnected,
-            Func<string, string, string> OnClientReceived,
+            Func<string, byte[], byte[]> OnClientReceived,
             int _ConcurrencyVolumn)
         {
-            this.ipAddr = _IPAddress;
+            ipAddr = _IPAddress;
 
-            this.port = _port;
+            port = _port;
 
-            this.ConcurrencyVolumn = _ConcurrencyVolumn;
+            ConcurrencyVolumn = _ConcurrencyVolumn;
 
-            this.transProtocol = _transProtocol;
+            transProtocol = _transProtocol;
 
             this.OnClientConnected = OnClientConnected;
 

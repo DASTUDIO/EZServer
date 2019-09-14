@@ -2,11 +2,11 @@
 using System.Text;
 using System.Collections.Generic;
 
-using ezserver.Tools;
+using Z.Tools;
 
-namespace ezserver
+namespace Z
 {
-    public class ezserver
+    public class EzServer
     {
         #region Web
 
@@ -18,7 +18,7 @@ namespace ezserver
         /// <returns><c>true</c>, 启动成功, <c>false</c> 没启动成功.</returns>
         /// <param name="ResponseCallback">接受客户端消息时的回掉 第一个参数是客户端访问的url 第二个参数是客户端提交的post内容 返回string类型返回值直接回复给客户端 如果为null则不回复.</param>
         /// <param name="port">端口.</param>
-        public static bool HTTP_Server_Start(Func<string, string, string> ResponseCallback, int port = 8080)
+        public static bool ServerHttpStart(Func<string, string, string> ResponseCallback, int port = 8080)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace ezserver
                 webserver.runServer();
 
                 Logger.Log("HTTP 服务端 已成功启动！端口:" + port + "");
-                Logger.Log("欢迎来到微服务器，本SDK的使用详情请登录http://src.pub/查看");
+                //Logger.Log("欢迎来到微服务器，本SDK的使用详情请登录http://src.pub/查看");
 
                 return true;
             }
@@ -65,7 +65,7 @@ namespace ezserver
         /// <summary>
         /// 停止Web服务
         /// </summary>
-        public static void HTTP_Server_Stop()
+        public static void ServerHttpStop()
         {
             if (webserver != null)
                 webserver.stopServer();
@@ -86,7 +86,7 @@ namespace ezserver
         /// <returns><c>true</c>, 发送成功, <c>false</c> 没发送成功.</returns>
         /// <param name="url">请求的URL.</param>
         /// <param name="responseCallback">接收到返回消息时的回掉 传入string为返回结果.</param>
-        public static bool HTTP_Request_GET(string url, Action<string> responseCallback)
+        public static bool WebGet(string url, Action<string> responseCallback)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace ezserver
         /// <param name="url">请求的URL.</param>
         /// <param name="parameters">post数据内容表.</param>
         /// <param name="responseCallBack">接受到返回消息时的回掉 传入的string为返回结果.</param>
-        public static bool HTTP_Request_POST(string url, Dictionary<string, string> parameters, Action<string> responseCallBack)
+        public static bool WebPost(string url, Dictionary<string, string> parameters, Action<string> responseCallBack)
         {
             try
             {
@@ -148,11 +148,11 @@ namespace ezserver
         /// <param name="port">监听的端口.</param>
         /// <param name="iPType">ip类型 v4 还是 v6.</param>
         /// <param name="listen">监听并发数.</param>
-        public static bool TCP_Server_Start(
+        public static bool ServerTcpStart(
             Action<string> OnConnectCallBack,
-            Func<string, string, string> OnReceivedCallBack,
+            Func<string, byte[], byte[]> OnReceivedCallBack,
             int port = 8084,
-            DIPType iPType = DIPType.IPv4,
+            IPType iPType = IPType.IPv4,
             string ip = "0.0.0.0",
             int listen = 100)
         {
@@ -163,7 +163,7 @@ namespace ezserver
                 TcpServer.runServer();
 
                 Logger.Log("TCP 服务端 已成功启动！端口:"+port+"");
-                Logger.Log("欢迎来到微服务器，本SDK的使用详情请登录http://src.pub/查看");
+                //Logger.Log("欢迎来到微服务器，本SDK的使用详情请登录http://src.pub/查看");
 
                 return true;
             }
@@ -178,7 +178,7 @@ namespace ezserver
         /// <summary>
         /// 停止Tcp服务器
         /// </summary>
-        public static void TCP_Server_Stop()
+        public static void ServerTcpStop()
         {
             if (TcpServer != null)
                 TcpServer.ShutDownServer();
@@ -188,7 +188,7 @@ namespace ezserver
         /// 向所有Tcp上的客户端广播一条消息
         /// </summary>
         /// <param name="msg">Message.</param>
-        public static void _TCP_Server_BoardCast_Message_To_All_Clients(string msg)
+        public static void ServerTcpBoardCast(byte[] msg)
         {
             if (TcpServer != null)
                 TcpServer.BroadCastMessageToAllClients(msg);
@@ -200,7 +200,7 @@ namespace ezserver
         /// <returns><c>true</c>, 发送成功, <c>false</c> 没发送成功.</returns>
         /// <param name="clientToken">客户端Token.</param>
         /// <param name="msg">要发送的消息.</param>
-        public static bool _TCP_Server_Send_Message_By_Token(string clientToken, string msg)
+        public static bool ServerTcpSend(string clientToken, byte[] msg)
         {
             if (Token.Instance[clientToken] == null)
                 return false;
@@ -218,7 +218,7 @@ namespace ezserver
         /// 关闭一个客户端节点
         /// </summary>
         /// <param name="clientToken">客户端Token.</param>
-        public static void _TCP_Server_ShutDown_Client_By_Token(string clientToken)
+        public static void ServerTcpClosePoint(string clientToken)
         {
             try
             {
@@ -249,9 +249,9 @@ namespace ezserver
         /// <param name="ip">要连接的IP.</param>
         /// <param name="port">端口.</param>
         /// <param name="OnReceived">接收到消息时的回掉函数 传入的值是接收到的消息 返回字符串直接发送给服务端 如果返回null则不发送.</param>
-        public static bool TCP_Client_Start(string ip, int port, Func<string, string> OnReceived)
+        public static bool ClientTcpStart(string ip, int port, Func<byte[], byte[]> OnReceived,IPType ipType = IPType.IPv4)
         {
-            TcpClient = new TcpClient(ip, port, OnReceived);
+            TcpClient = new TcpClient(ip, port, OnReceived, ipType);
             return true;
         }
 
@@ -259,7 +259,7 @@ namespace ezserver
         /// Tcp客户端发送一条消息
         /// </summary>
         /// <param name="msg">Message.</param>
-        public static void _TCP_Client_Send(string msg)
+        public static void ClientTcpSend(byte[] msg)
         {
             if (TcpClient == null)
                 return;
@@ -288,7 +288,7 @@ namespace ezserver
         /// <param name="ResponseCallBack">接收到消息的回掉方法 接受传入Endpoint发送源和string消息 返回string消息返回string类型返回值直接回复给客户端 如果为null则不回复.</param>
         /// <param name="iPType">IPv4 或 IPv6.</param>
         /// <param name="bufferSize">缓冲区尺寸.</param>
-        public static bool UDP_Server_Start(Func<System.Net.EndPoint, string, string> ResponseCallBack = null, int port = 8085, DIPType iPType = DIPType.IPv4, int bufferSize = 1024)
+        public static bool ServerUdpStart(Func<System.Net.EndPoint, byte[], byte[]> ResponseCallBack = null, int port = 8085, IPType iPType = IPType.IPv4, int bufferSize = 1024)
         {
             try
             {
@@ -297,7 +297,7 @@ namespace ezserver
                 udpHandler.runServer();
 
                 Logger.Log("UDP 服务端 已成功启动！端口:" + port + "");
-                Logger.Log("欢迎来到微服务器，本SDK的使用详情请登录http://src.pub/查看");
+                //Logger.Log("欢迎来到微服务器，本SDK的使用详情请登录http://src.pub/查看");
 
                 return true;
             }
@@ -312,7 +312,7 @@ namespace ezserver
         /// <summary>
         /// 停止Udp服务器
         /// </summary>
-        public static void UDP_Server_Stop()
+        public static void ServerUdpStop()
         {
             if (udpHandler != null)
                 udpHandler.StopServer();
@@ -322,7 +322,7 @@ namespace ezserver
         /// 设置Udp服务器的回掉方法
         /// </summary>
         /// <param name="responseCallBack">接收到消息的回掉方法 接受传入Endpoint发送源和string消息返回string类型返回值直接回复给客户端 如果为null则不回复. </param>
-        public static void _UDP_Server_Set_CallBack(Func<System.Net.EndPoint, string, string> responseCallBack)
+        public static void _UDP_Server_Set_CallBack(Func<System.Net.EndPoint, byte[], byte[]> responseCallBack)
         {
             if (udpHandler != null)
                 udpHandler.ResponseCallback = responseCallBack;
@@ -334,10 +334,10 @@ namespace ezserver
         /// <param name="ip">Ip.</param>
         /// <param name="port">Port.</param>
         /// <param name="msg">Message.</param>
-        public static void UDP_Send(string ip, int port, string msg)
+        public static void UdpSend(string ip, int port, byte[] msg, IPType ipType = IPType.IPv4)
         {
             if (udpHandler == null)
-                udpHandler = new Udp();
+                udpHandler = new Udp(7575, ipType);
 
             udpHandler.SendTo(new System.Net.IPEndPoint(System.Net.IPAddress.Parse(ip), port), msg);
 
@@ -348,10 +348,10 @@ namespace ezserver
         /// </summary>
         /// <param name="target">Target.</param>
         /// <param name="msg">Message.</param>
-        public static void UDP_Send(System.Net.EndPoint target, string msg)
+        public static void UdpSend(System.Net.EndPoint target, byte[] msg, IPType ipType = IPType.IPv4)
         {
             if (udpHandler != null)
-                udpHandler = new Udp();
+                udpHandler = new Udp(7575, ipType);
 
             udpHandler.SendTo(target, msg);
         }
@@ -374,20 +374,26 @@ namespace ezserver
         #endregion
 
         /// <summary>
-        /// 字符比特 编码类型
+        /// 字符比特 编码类型 web
         /// </summary>
         public static Encoding GlobalEncoding = Encoding.UTF8;
 
-
+        public static void Main(string[] args)
+        {
+            //ServerUdpStart((ep,bys)=> { Console.WriteLine("1"+GlobalEncoding.GetString(bys)); return new byte[0]; },8084, IPType.IPv6);
+            ServerTcpStart((s)=> { Console.WriteLine(s + " 连接了"); }, (id, b) => { Console.WriteLine(GlobalEncoding.GetString(b));  return b; }, 8084, IPType.IPv6);
+            Console.ReadLine();
+        }
     }
 
     /// <summary>
     /// IP类型枚举
     /// </summary>
-	public enum DIPType : Byte
+	public enum IPType : Byte
     {
         IPv4,
         IPv6
     }
 
+    
 }

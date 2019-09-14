@@ -2,7 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 
-namespace  ezserver.Tools
+namespace  Z.Tools
 {
     public class FileLogBlackBoard
     {

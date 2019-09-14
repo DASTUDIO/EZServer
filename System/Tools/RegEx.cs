@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace  ezserver.Tools
+namespace  Z.Tools
 {
     public class RegEx
     {

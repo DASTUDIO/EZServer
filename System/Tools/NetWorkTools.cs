@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Net;
 
 
-namespace ezserver.Tools
+namespace Z.Tools
 {
     public class NetWorkTools
     {

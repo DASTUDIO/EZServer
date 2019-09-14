@@ -2,17 +2,15 @@
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
-using  ezserver.Tools;
+using  Z.Tools;
 
-namespace  ezserver
+namespace  Z
 {
     public class TcpClient
     {
         #region Elements
 
-        protected Socket dasSocket = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
-
-        protected StringBuilder sb = new StringBuilder();
+        protected Socket dasSocket;
 
         protected byte[] buffer = new byte[1024];       //for receive
 
@@ -20,20 +18,25 @@ namespace  ezserver
 
         protected byte[] sendDataBuffer;                //for send
 
-        protected bool isSpitePackage = false;
+        protected bool isSpitePackage ;
 
         protected int restPackage = -1;
 
-        protected int bufferIndex = 0;
+        protected int bufferIndex ;
 
         protected int maxSinglePackageSize = 1024;
 
-        public Func<string,string> OnReceived;
+        public Func<byte[],byte[]> OnReceived;
 
         #endregion
 
-        public TcpClient(string _ServerIpAddr, int _ServerPort,Func<string,string> OnReceived)
+        public TcpClient(string _ServerIpAddr, int _ServerPort, Func<byte[],byte[]> OnReceived,  IPType ipType = IPType.IPv4)
         {
+            if(ipType ==  IPType.IPv6)
+                dasSocket = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
+            else
+                dasSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
             IPAddress ipa = IPAddress.Parse(_ServerIpAddr);
 
             IPEndPoint ipe = new IPEndPoint(ipa, _ServerPort);
@@ -74,19 +77,15 @@ namespace  ezserver
 
             int byteLength = socketHandler.EndReceive(ar);
 
-            string tempContent = string.Empty;
-
             if (byteLength > 0)
             {
-                tempContent = sb.Append((ezserver.GlobalEncoding.GetString(buffer))).ToString();
-
                 if (OnReceived != null)
                 {
-                    string result = OnReceived(tempContent);
-                    if (result != null)
+                    byte[] result = OnReceived(buffer);
+
+                    if (result != null && result.Length > 0)
                         SendDataToServer(result);
                 }
-                sb.Clear();
             }
 
             socketHandler.BeginReceive(
@@ -116,23 +115,21 @@ namespace  ezserver
 
         #region Facade Zone
 
-        public void SendDataToServer(string msg)
+        public void SendDataToServer(byte[] msg)
         {
-            if (!this.dasSocket.Connected)
+            if (!dasSocket.Connected)
             {
-                 Logger.LogError("TcpClient has not Connected");
+                Logger.LogError("TcpClient has not Connected");
                 return;
             }
             
-            byte[] sendData = ezserver.GlobalEncoding.GetBytes(msg);
-
-                this.dasSocket.BeginSend(
-                    sendData,
+                dasSocket.BeginSend(
+                    msg,
                     0,
-                    sendData.Length,
+                    msg.Length,
                     0,
                     new AsyncCallback(SendAsynCallBack),
-                    this.dasSocket
+                    dasSocket
                     );
         }
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net.Sockets;
 
-using ezserver.Tools;
+using Z.Tools;
 
-namespace ezserver
+namespace Z
 {
     public class TcpConnectedPeer
     {
@@ -14,24 +14,20 @@ namespace ezserver
         /// <summary>
         /// 接收到消息时的回掉函数 返回值直接回复给客户端 返回null 则不回复
         /// </summary>
-        public Func<string, string, string> ResponseCallBack;
+        public Func<string, byte[], byte[]> ResponseCallBack;
 
         /// <summary>
         /// 向该节点的客户端发送一条消息
         /// </summary>
         /// <param name="msg">消息.</param>
-        public void SendDataToClient(string msg)
+        public void SendDataToClient(byte[] msg)
         {
-            //Logger.Log("Tcp Server Send Data to : " + socketHandler.RemoteEndPoint + " : " + msg);
-
-            byte[] sendData = ezserver.GlobalEncoding.GetBytes(msg);
-
             try
             {
                 this.socketHandler.BeginSend(
-                    sendData,
+                    msg,
                     0,
-                    sendData.Length,
+                    msg.Length,
                     SocketFlags.None,
                     new AsyncCallback(PeerSendCallBack), this.socketHandler);
             }
@@ -55,7 +51,7 @@ namespace ezserver
         public TcpConnectedPeer(
             string token,
             Socket socket,
-            Func<string, string, string> OnReceived,
+            Func<string, byte[], byte[]> OnReceived,
             TcpServer fromServer)
         {
             this.token = token;
@@ -72,8 +68,6 @@ namespace ezserver
                 new AsyncCallback(PeerReceiveCallBack),
                 this.socketHandler
             );
-
-            //Logger.Log("TCP Server Connect : " + socketHandler.RemoteEndPoint);
 
         }
 
@@ -106,9 +100,7 @@ namespace ezserver
             }
             else
             {
-                this.socketHandler.Close();
-
-                //Logger.Log("[TcpServer] Client is Offline ");
+                socketHandler.Close();
 
                 if (OnDisconnected != null)
                     OnDisconnected(null);
@@ -116,21 +108,13 @@ namespace ezserver
                 return;
             }
 
-            string tempContent = string.Empty;
-
-            tempContent = ezserver.GlobalEncoding.GetString(receivedData);
-
-            // 释放temp
-            receivedData = null;
-
-            //Logger.Log("Tcp Server Receive data from : " + socketHandler.RemoteEndPoint + " " +tempContent);
-
             try
             {
-                if (this.ResponseCallBack != null)
+                if (ResponseCallBack != null)
                 {
-                    string result = (this.ResponseCallBack(this.token, tempContent));
-                    if (result != null)
+                    byte[] result = (ResponseCallBack(token, receivedData));
+
+                    if (result != null && result.Length > 0)
                         SendDataToClient(result);
                 }
             }
@@ -154,7 +138,7 @@ namespace ezserver
                 this.socketHandler.Close();
                 if (OnDisconnected != null)
                     OnDisconnected(e);
-                //Logger.Log("Client is Offline : " + socketHandler.RemoteEndPoint);
+                
                 return;
             }
         }

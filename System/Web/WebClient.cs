@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace ezserver
+namespace Z
 {
     public class WebClient
     {
@@ -54,7 +54,7 @@ namespace ezserver
 
             request.ContentType = content_type;
 
-            request.ContentLength = ezserver.GlobalEncoding.GetBytes(postData).Length;
+            request.ContentLength = EzServer.GlobalEncoding.GetBytes(postData).Length;
 
             if (headers != null)
                 request.Headers = headers;
@@ -64,7 +64,7 @@ namespace ezserver
 
             Stream requestStream = request.GetRequestStream();
 
-            requestStream.Write(ezserver.GlobalEncoding.GetBytes(postData), 0, ezserver.GlobalEncoding.GetBytes(postData).Length);
+            requestStream.Write(EzServer.GlobalEncoding.GetBytes(postData), 0, EzServer.GlobalEncoding.GetBytes(postData).Length);
 
             requestStream.Close();
 
@@ -76,7 +76,7 @@ namespace ezserver
 
             Stream responseStream = response.GetResponseStream();
 
-            StreamReader responseReader = new StreamReader(responseStream, ezserver.GlobalEncoding);
+            StreamReader responseReader = new StreamReader(responseStream, EzServer.GlobalEncoding);
 
             string htmlResult = (responseReader.ReadToEnd());
 
@@ -160,7 +160,7 @@ namespace ezserver
 
             Stream responseStream = response.GetResponseStream();
 
-            StreamReader responseReader = new StreamReader(responseStream, ezserver.GlobalEncoding);
+            StreamReader responseReader = new StreamReader(responseStream, EzServer.GlobalEncoding);
 
             string htmlResult = responseReader.ReadToEnd();
 

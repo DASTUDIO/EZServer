@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using ezserver.Tools;
+using Z.Tools;
 
-namespace ezserver
+namespace Z
 {
     public class Udp
     {
@@ -11,12 +11,12 @@ namespace ezserver
 
         public Socket socketHandler { get; private set; }
 
-        public Func<EndPoint, string, string> ResponseCallback;
+        public Func<EndPoint, byte[], byte[]> ResponseCallback;
 
 
         IPEndPoint InitEndPoint;
 
-        DIPType IPType;
+        IPType IPType;
 
         int bufferSize;
 
@@ -24,13 +24,13 @@ namespace ezserver
 
         #endregion
 
-        public Udp(int Port = 8085, DIPType IpType = DIPType.IPv4, Func<EndPoint, string, string> ResponseCallBack = null, int bufferSize = 1024)
+        public Udp(int Port = 8085, IPType IpType = IPType.IPv4, Func<EndPoint, byte[], byte[]> ResponseCallBack = null, int bufferSize = 1024)
         {
-            this.ResponseCallback = ResponseCallBack;
+            ResponseCallback = ResponseCallBack;
 
-            this.IPType = IpType;
+            IPType = IpType;
 
-            this.port = Port;
+            port = Port;
 
             this.bufferSize = bufferSize;
 
@@ -45,10 +45,10 @@ namespace ezserver
                 return;
             }
 
-            UdpPeer peerInit = new UdpPeer(socketHandler, this.bufferSize, this.IPType);
+            UdpPeer peerInit = new UdpPeer(socketHandler, bufferSize, IPType);
 
             socketHandler.BeginReceiveFrom
-                         (peerInit.buffer, 0, this.bufferSize, SocketFlags.None,
+                         (peerInit.buffer, 0, bufferSize, SocketFlags.None,
                           ref peerInit.remoteEndPoint, new AsyncCallback(BeginResponseCallBack), peerInit);
         }
 
@@ -58,15 +58,13 @@ namespace ezserver
             socketHandler = null;
         }
 
-        public void SendTo(EndPoint endPoint, string msg)
+        public void SendTo(EndPoint endPoint, byte[] msg)
         {
-            if (this.socketHandler == null)
+            if (socketHandler == null)
                 init();
 
-            byte[] data = ezserver.GlobalEncoding.GetBytes(msg);
-
             this.socketHandler.BeginSendTo
-                (data, 0, data.Length, SocketFlags.None, endPoint, new AsyncCallback(BeginSendToCallBack), null);
+                (msg, 0, msg.Length, SocketFlags.None, endPoint, new AsyncCallback(BeginSendToCallBack), null);
 
         }
 
@@ -80,11 +78,11 @@ namespace ezserver
 
             if (rev > 0)
             {
-                if (this.ResponseCallback != null)
+                if (ResponseCallback != null)
                 {
-                    string result = this.ResponseCallback(peer.remoteEndPoint, ezserver.GlobalEncoding.GetString(peer.buffer));
+                    byte[] result = ResponseCallback(peer.remoteEndPoint, peer.buffer);
 
-                    if (result != null && result != string.Empty && result != "")
+                    if (result != null && result.Length > 0 )
                     {
                         SendTo(peer.remoteEndPoint, result);
                     }
@@ -92,6 +90,10 @@ namespace ezserver
                     peer.ResetBuffer();
 
                 }
+
+                socketHandler.BeginReceiveFrom
+                             (peer.buffer, 0, bufferSize, SocketFlags.None,
+                              ref peer.remoteEndPoint, new AsyncCallback(BeginResponseCallBack), peer);
             }
         }
 
@@ -102,15 +104,15 @@ namespace ezserver
 
         void init()
         {
-            if (this.IPType == DIPType.IPv4)
+            if (IPType == IPType.IPv4)
             {
                 socketHandler = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                InitEndPoint = new IPEndPoint(IPAddress.Any, this.port);
+                InitEndPoint = new IPEndPoint(IPAddress.Any, port);
             }
-            else if (this.IPType == DIPType.IPv6)
+            else if (IPType == IPType.IPv6)
             {
                 socketHandler = new Socket(AddressFamily.InterNetworkV6, SocketType.Dgram, ProtocolType.Udp);
-                InitEndPoint = new IPEndPoint(IPAddress.IPv6Any, this.port);
+                InitEndPoint = new IPEndPoint(IPAddress.IPv6Any, port);
             }
             socketHandler.Bind(InitEndPoint);
         }
@@ -127,13 +129,15 @@ namespace ezserver
 
         int bufferSize;
 
-        DIPType iPType = DIPType.IPv4;
+        IPType iPType = IPType.IPv4;
 
-        public UdpPeer(Socket _serverSocket, int bufferSize, DIPType iPType)
+        public UdpPeer(Socket _serverSocket, int bufferSize, IPType iPType)
         {
-            this.serverSocket = _serverSocket;
+            serverSocket = _serverSocket;
 
-            if (this.iPType == DIPType.IPv4)
+            this.iPType = iPType;
+
+            if (this.iPType == IPType.IPv4)
                 remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
             else
                 remoteEndPoint = new IPEndPoint(IPAddress.IPv6Any, 0);
@@ -147,9 +151,9 @@ namespace ezserver
 
         public void ResetBuffer()
         {
-            buffer = new byte[this.bufferSize];
+            buffer = new byte[bufferSize];
 
-            if (this.iPType == DIPType.IPv4)
+            if (iPType == IPType.IPv4)
                 remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
             else
                 remoteEndPoint = new IPEndPoint(IPAddress.IPv6Any, 0);

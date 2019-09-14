@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FDB16914-DCF7-42BE-8D87-77DB21D68B37}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>ezserver</RootNamespace>
     <AssemblyName>ezserver</AssemblyName>
     <ReleaseVersion>1.0</ReleaseVersion>
@@ -21,6 +21,7 @@
     <Owners>davidjang</Owners>
     <Summary>一句话构建服务端与客户端</Summary>
     <Title>ezserver</Title>
+    <StartupObject>Z.EzServer</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,10 +62,7 @@
     <Compile Include="System\Udp\Udp.cs" />
     <Compile Include="System\Web\WebClient.cs" />
     <Compile Include="System\Web\WebServer.cs" />
-    <Compile Include="ezserver.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="EzServer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NuGet.Build.Packaging.0.2.5-dev.8\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.5-dev.8\build\NuGet.Build.Packaging.targets')" />

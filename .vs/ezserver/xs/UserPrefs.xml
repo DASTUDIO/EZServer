@@ -1,0 +1,17 @@
+﻿<Properties StartupConfiguration="{FDB16914-DCF7-42BE-8D87-77DB21D68B37}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EzServer.cs">
+    <Files>
+      <File FileName="ezserver.cs" Line="384" Column="140" />
+      <File FileName="System/Tcp/TcpClient.cs" />
+      <File FileName="System/Tcp/TcpServer.cs" />
+      <File FileName="System/Tcp/TcpConnectedPeer.cs" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.ezserver PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

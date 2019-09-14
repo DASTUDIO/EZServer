@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Net;
 using System.IO;
-using ezserver.Tools;
+using Z.Tools;
 using System.Text;
 
-namespace ezserver
+namespace Z
 {
     public class WebServer
     {
@@ -102,7 +102,7 @@ namespace ezserver
 
                 string[] localIPs = NetWorkTools.GetLocalIP();
 
-                foreach(var item in localIPs)
+                foreach (var item in localIPs)
                 {
                     this.urlPrefixSet.Add(item + ":" + port);
                 }
@@ -148,7 +148,7 @@ namespace ezserver
 
                 while ((count = s.Read(buffer, 0, 1024)) > 0)
                 {
-                    builder.Append(ezserver.GlobalEncoding.GetString(buffer, 0, count));
+                    builder.Append(EzServer.GlobalEncoding.GetString(buffer, 0, count));
                 }
                 s.Flush();
 
@@ -170,7 +170,7 @@ namespace ezserver
         {
             string CryptStrData = (strMsg);
 
-            using (StreamWriter writer = new StreamWriter(_contextHandler.Response.OutputStream, ezserver.GlobalEncoding))
+            using (StreamWriter writer = new StreamWriter(_contextHandler.Response.OutputStream, EzServer.GlobalEncoding))
             {
                 writer.Write(CryptStrData);
 
@@ -185,7 +185,7 @@ namespace ezserver
         {
             _contextHandler.Response.ContentType = "text/html";
 
-            using (StreamWriter writer = new StreamWriter(_contextHandler.Response.OutputStream, ezserver.GlobalEncoding))
+            using (StreamWriter writer = new StreamWriter(_contextHandler.Response.OutputStream, EzServer.GlobalEncoding))
             {
                 writer.Write(httpContent);
 
@@ -201,7 +201,7 @@ namespace ezserver
         {
             _contextHandler.Response.ContentType = contentType;
 
-            using (StreamWriter writer = new StreamWriter(_contextHandler.Response.OutputStream, ezserver.GlobalEncoding))
+            using (StreamWriter writer = new StreamWriter(_contextHandler.Response.OutputStream, EzServer.GlobalEncoding))
             {
                 writer.Write(customContent);
 
@@ -217,7 +217,7 @@ namespace ezserver
         {
             _contextHandler.Response.ContentType = "text/html";
 
-            StreamWriter sw = new StreamWriter(_contextHandler.Response.OutputStream, ezserver.GlobalEncoding);
+            StreamWriter sw = new StreamWriter(_contextHandler.Response.OutputStream, EzServer.GlobalEncoding);
 
             sw.Write(e404msg);
 

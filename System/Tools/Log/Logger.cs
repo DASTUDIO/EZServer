@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading;
 
-namespace ezserver.Tools
+namespace Z.Tools
 {
     public class Logger
     {

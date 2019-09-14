@@ -1,0 +1,331 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ezserver</name>
+    </assembly>
+    <members>
+        <member name="F:Z.TcpConnectedPeer.ResponseCallBack">
+            <summary>
+            接收到消息时的回掉函数 返回值直接回复给客户端 返回null 则不回复
+            </summary>
+        </member>
+        <member name="M:Z.TcpConnectedPeer.SendDataToClient(System.Byte[])">
+            <summary>
+            向该节点的客户端发送一条消息
+            </summary>
+            <param name="msg">消息.</param>
+        </member>
+        <member name="F:Z.TcpServer.OnClientConnected">
+            <summary>
+            传入客户端Token
+            </summary>
+        </member>
+        <member name="F:Z.TcpServer.OnClientReceived">
+            <summary>
+            传入客户端Token ， 消息msg
+            </summary>
+        </member>
+        <member name="M:Z.Tools.FileReader.ReadFile(System.String)">
+            <summary>
+            读取一个配置文件 （varName=varValue格式 #开头是注释）
+            </summary>
+            <returns>参数列表.</returns>
+            <param name="filePath">File path.</param>
+        </member>
+        <member name="M:Z.Tools.FileWriter.WriteFile(System.String,System.String)">
+            <summary>
+            写入一个文件
+            </summary>
+            <param name="filePath">文件地址</param>
+            <param name="content">写入内容.</param>
+        </member>
+        <member name="M:Z.Tools.NetWorkTools.IPv4ScanPort(System.String,System.Int32,System.Int32,System.Int32,System.Action{Z.Tools.IPAndPort,System.Boolean})">
+            <summary>
+            端口扫描
+            </summary>
+            <param name="IPPrefix">IP的c前缀 比如”192.168.0.“ </param>
+            <param name="DStart">D段起始 比如 1.</param>
+            <param name="DEnd">D段结尾 比如 255.</param>
+            <param name="port">探测的端口.</param>
+            <param name="ConnectEvent">探测结果的回掉 传入IPAndPort终端类对象和是否开启的布尔状态.</param>
+        </member>
+        <member name="M:Z.Tools.NetWorkTools.StopPortScan">
+            <summary>
+            停止所有的端口扫描线程
+            </summary>
+        </member>
+        <member name="M:Z.Tools.NetWorkTools.GetLocalIP">
+            <summary>
+            获取内网IP
+            </summary>
+            <returns>The local ip.</returns>
+        </member>
+        <member name="M:Z.Tools.RegEx.FindAll(System.String,System.String,System.String)">
+            <summary>
+            从源中匹配所有内容
+            </summary>
+            <returns>匹配的数据.</returns>
+            <param name="sourceData"> 源文本.</param>
+            <param name="regexPrefix"> 匹配前缀.</param>
+            <param name="regexPostFix">匹配后缀.</param>
+        </member>
+        <member name="M:Z.Tools.RegEx.FindAll(System.String,System.String,System.Boolean)">
+            <summary>
+            从源中匹配所有内容.
+            </summary>
+            <returns>匹配的数据.</returns>
+            <param name="sourceData">源文本.</param>
+            <param name="regexPattern">正则表达式.</param>
+            <param name="ignoreCase">If set to <c>true</c> 忽略大小写.</param>
+        </member>
+        <member name="M:Z.Tools.RegEx.FindAll(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            从源中匹配所有内容
+            </summary>
+            <returns>匹配的数据.</returns>
+            <param name="sourceData">源文本.</param>
+            <param name="regexPrefix">匹配前缀.</param>
+            <param name="regexPostFix">匹配后缀.</param>
+            <param name="OnlyDigit">If set to <c>true</c> 只提取数字.</param>
+        </member>
+        <member name="M:Z.Tools.RegEx.FindAll(System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            从源中匹配所有内容
+            </summary>
+            <returns>匹配的数据.</returns>
+            <param name="sourceData">源文本.</param>
+            <param name="regexPreFix">匹配前缀.</param>
+            <param name="regexPostFix">匹配后缀.</param>
+            <param name="OnlyDigit">If set to <c>true</c> 只提取数字.</param>
+            <param name="ignoreCase">If set to <c>true</c> 忽略大小写.</param>
+        </member>
+        <member name="M:Z.Tools.Token.GenToken(System.Int32)">
+            <summary>
+            随机生成一个不重复的Token字符串
+            </summary>
+            <returns>生成的token字符串.</returns>
+            <param name="tokenLength">Token长度.</param>
+        </member>
+        <member name="P:Z.Tools.Token.Item(System.String)">
+            <summary>
+            每个token保存自定义object
+            </summary>
+            <param name="token">Token.</param>
+        </member>
+        <member name="M:Z.Tools.Token.Clear">
+            <summary>
+            清空保存的所有token数据object和重复检测也被重置
+            </summary>
+        </member>
+        <member name="F:Z.Tools.Logger.logType">
+            <summary>
+            打印类型 控制台 or Unity
+            </summary>
+        </member>
+        <member name="F:Z.Tools.Logger.DoLog">
+            <summary>
+            是否开启打印
+            </summary>
+        </member>
+        <member name="F:Z.Tools.Logger.FileLog">
+            <summary>
+            是否开启Log文件输出
+            </summary>
+        </member>
+        <member name="E:Z.Tools.Logger.LogDelegate">
+            <summary>
+            自定义log string:msg
+            </summary>
+        </member>
+        <member name="M:Z.Tools.Logger.Log(System.String)">
+            <summary>
+            普通样式 Log 打印一条信息
+            </summary>
+            <returns>The log.</returns>
+            <param name="msg">Message.</param>
+        </member>
+        <member name="M:Z.Tools.Logger.LogWarnning(System.String)">
+            <summary>
+            警告样式 Log 打印一条信息
+            </summary>
+            <param name="msg">Message.</param>
+        </member>
+        <member name="M:Z.Tools.Logger.LogError(System.String)">
+            <summary>
+            错误样式 Log 打印一条信息
+            </summary>
+            <param name="msg">Message.</param>
+        </member>
+        <member name="F:Z.WebServer.OnResponse">
+            <summary>
+            参数从左到右 依次为 RawSubUrl ，Post数据 ， 返回值类型string
+            </summary>
+        </member>
+        <member name="M:Z.EzServer.ServerHttpStart(System.Func{System.String,System.String,System.String},System.Int32)">
+            <summary>
+            启动Web服务器.
+            </summary>
+            <returns><c>true</c>, 启动成功, <c>false</c> 没启动成功.</returns>
+            <param name="ResponseCallback">接受客户端消息时的回掉 第一个参数是客户端访问的url 第二个参数是客户端提交的post内容 返回string类型返回值直接回复给客户端 如果为null则不回复.</param>
+            <param name="port">端口.</param>
+        </member>
+        <member name="M:Z.EzServer._HTTP_Server_Set_Callback(System.Func{System.String,System.String,System.String})">
+            <summary>
+            重置Web服务器的回掉函数
+            </summary>
+            <param name="responseCallBack">接受客户端消息时的回掉 第一个参数是客户端访问的url 第二个参数是客户端提交的post内容 返回string类型返回string类型返回值直接回复给客户端 如果为null则不回复.</param>/
+        </member>
+        <member name="M:Z.EzServer._Get_HTTP_Server">
+            <summary>
+            得到Web服务器句柄
+            </summary>
+            <returns>Web服务器句柄.</returns>
+        </member>
+        <member name="M:Z.EzServer.ServerHttpStop">
+            <summary>
+            停止Web服务
+            </summary>
+        </member>
+        <member name="F:Z.EzServer.webserver">
+            <summary>
+            handler
+            </summary>
+        </member>
+        <member name="M:Z.EzServer.WebGet(System.String,System.Action{System.String})">
+            <summary>
+            发送一个Get请求
+            </summary>
+            <returns><c>true</c>, 发送成功, <c>false</c> 没发送成功.</returns>
+            <param name="url">请求的URL.</param>
+            <param name="responseCallback">接收到返回消息时的回掉 传入string为返回结果.</param>
+        </member>
+        <member name="M:Z.EzServer.WebPost(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Action{System.String})">
+            <summary>
+            发送一个Post请求
+            </summary>
+            <returns><c>true</c>, 发送成功, <c>false</c> 没发送成功.</returns>
+            <param name="url">请求的URL.</param>
+            <param name="parameters">post数据内容表.</param>
+            <param name="responseCallBack">接受到返回消息时的回掉 传入的string为返回结果.</param>
+        </member>
+        <member name="M:Z.EzServer.ServerTcpStart(System.Action{System.String},System.Func{System.String,System.Byte[],System.Byte[]},System.Int32,Z.IPType,System.String,System.Int32)">
+            <summary>
+            启动一个Tcp服务器
+            </summary>
+            <returns><c>true</c>, 启动成功, <c>false</c> 没启动成功.</returns>
+            <param name="OnConnectCallBack">有客户端连接时触发的回掉函数 传入的值是服务器生成的唯一的客户端的Token.</param>
+            <param name="OnReceivedCallBack">有客户端收到信息时触发的回掉函数 传入的值是客户端Token 和客户端接收到的字符串消息 返回的字符串消息直接回复给客户端 如果为null则不回复.</param>
+            <param name="ip">服务端绑定的ip.</param>
+            <param name="port">监听的端口.</param>
+            <param name="iPType">ip类型 v4 还是 v6.</param>
+            <param name="listen">监听并发数.</param>
+        </member>
+        <member name="M:Z.EzServer.ServerTcpStop">
+            <summary>
+            停止Tcp服务器
+            </summary>
+        </member>
+        <member name="M:Z.EzServer.ServerTcpBoardCast(System.Byte[])">
+            <summary>
+            向所有Tcp上的客户端广播一条消息
+            </summary>
+            <param name="msg">Message.</param>
+        </member>
+        <member name="M:Z.EzServer.ServerTcpSend(System.String,System.Byte[])">
+            <summary>
+            根据客户端Token向指定客户端发送一条消息
+            </summary>
+            <returns><c>true</c>, 发送成功, <c>false</c> 没发送成功.</returns>
+            <param name="clientToken">客户端Token.</param>
+            <param name="msg">要发送的消息.</param>
+        </member>
+        <member name="M:Z.EzServer.ServerTcpClosePoint(System.String)">
+            <summary>
+            关闭一个客户端节点
+            </summary>
+            <param name="clientToken">客户端Token.</param>
+        </member>
+        <member name="F:Z.EzServer.TcpServer">
+            <summary>
+            handler
+            </summary>
+        </member>
+        <member name="M:Z.EzServer.ClientTcpStart(System.String,System.Int32,System.Func{System.Byte[],System.Byte[]},Z.IPType)">
+            <summary>
+            启动一个Tcp客户端
+            </summary>
+            <returns><c>true</c>, i启动成功, <c>false</c> 没启动成功.</returns>
+            <param name="ip">要连接的IP.</param>
+            <param name="port">端口.</param>
+            <param name="OnReceived">接收到消息时的回掉函数 传入的值是接收到的消息 返回字符串直接发送给服务端 如果返回null则不发送.</param>
+        </member>
+        <member name="M:Z.EzServer.ClientTcpSend(System.Byte[])">
+            <summary>
+            Tcp客户端发送一条消息
+            </summary>
+            <param name="msg">Message.</param>
+        </member>
+        <member name="F:Z.EzServer.TcpClient">
+            <summary>
+            handler
+            </summary>
+        </member>
+        <member name="M:Z.EzServer.ServerUdpStart(System.Func{System.Net.EndPoint,System.Byte[],System.Byte[]},System.Int32,Z.IPType,System.Int32)">
+            <summary>
+            启动Udp服务器
+            </summary>
+            <returns><c>true</c>, 启动成功, <c>false</c> 没启动成功.</returns>
+            <param name="port">端口.</param>
+            <param name="ResponseCallBack">接收到消息的回掉方法 接受传入Endpoint发送源和string消息 返回string消息返回string类型返回值直接回复给客户端 如果为null则不回复.</param>
+            <param name="iPType">IPv4 或 IPv6.</param>
+            <param name="bufferSize">缓冲区尺寸.</param>
+        </member>
+        <member name="M:Z.EzServer.ServerUdpStop">
+            <summary>
+            停止Udp服务器
+            </summary>
+        </member>
+        <member name="M:Z.EzServer._UDP_Server_Set_CallBack(System.Func{System.Net.EndPoint,System.Byte[],System.Byte[]})">
+            <summary>
+            设置Udp服务器的回掉方法
+            </summary>
+            <param name="responseCallBack">接收到消息的回掉方法 接受传入Endpoint发送源和string消息返回string类型返回值直接回复给客户端 如果为null则不回复. </param>
+        </member>
+        <member name="M:Z.EzServer.UdpSend(System.String,System.Int32,System.Byte[],Z.IPType)">
+            <summary>
+            发送一条Udp消息
+            </summary>
+            <param name="ip">Ip.</param>
+            <param name="port">Port.</param>
+            <param name="msg">Message.</param>
+        </member>
+        <member name="M:Z.EzServer.UdpSend(System.Net.EndPoint,System.Byte[],Z.IPType)">
+            <summary>
+            发送一条Udp消息
+            </summary>
+            <param name="target">Target.</param>
+            <param name="msg">Message.</param>
+        </member>
+        <member name="M:Z.EzServer._Get_UDP_Server">
+            <summary>
+            获取Udp服务器句柄
+            </summary>
+            <returns>The UDP server.</returns>
+        </member>
+        <member name="F:Z.EzServer.udpHandler">
+            <summary>
+            handler
+            </summary>
+        </member>
+        <member name="F:Z.EzServer.GlobalEncoding">
+            <summary>
+            字符比特 编码类型 web
+            </summary>
+        </member>
+        <member name="T:Z.IPType">
+            <summary>
+            IP类型枚举
+            </summary>
+        </member>
+    </members>
+</doc>

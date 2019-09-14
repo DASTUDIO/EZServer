@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace  ezserver.Tools
+namespace  Z.Tools
 {
     public class FileWriter
     {
